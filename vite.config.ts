@@ -118,7 +118,7 @@ export default defineConfig({
   // nom exact de votre repo GitHub. Sans cette ligne, les chemins
   // d'assets seront cassés une fois déployé sur
   // https://<utilisateur>.github.io/StoryMap-GIT/
-  base: '/StoryMap-GIT/',
+  base: '/storymap-git2/',
   plugins: [
     react(),
     serveTilesPlugin(),
