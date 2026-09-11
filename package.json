@@ -1,0 +1,31 @@
+{
+  "name": "storymap-git",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "generate:fragment": "npx tsx src/utils/generateFragmentDemo.ts",
+    "generate:wp": "npx tsx src/utils/generateWordPressTestPage.ts",
+    "audit": "npx tsx src/utils/auditNetworkAndIsolation.ts",
+    "validate": "npx tsx src/utils/testPedagogicalValidator.ts"
+  },
+  "dependencies": {
+    "maplibre-gl": "^4.7.1",
+    "pmtiles": "^3.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.4",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.2",
+    "vite-plugin-singlefile": "^2.0.2"
+  }
+}

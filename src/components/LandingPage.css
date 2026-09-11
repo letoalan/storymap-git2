@@ -1,0 +1,978 @@
+/* ============================================================
+   LandingPage.css — StoryMap-GIT Landing Page Styles
+   Premium design: glassmorphism, animations, Inter font
+   ============================================================ */
+
+/* ── Design Tokens ─────────────────────────────────────────── */
+:root {
+  --lp-primary: #2563eb;
+  --lp-primary-dark: #1d4ed8;
+  --lp-primary-light: #3b82f6;
+  --lp-accent: #6366f1;
+  --lp-surface: #ffffff;
+  --lp-surface-glass: rgba(255, 255, 255, 0.08);
+  --lp-surface-glass-border: rgba(255, 255, 255, 0.12);
+  --lp-text: #0f172a;
+  --lp-text-secondary: #475569;
+  --lp-text-muted: #94a3b8;
+  --lp-bg-light: #f8fafc;
+  --lp-bg-section: #f1f5f9;
+  --lp-border: #e2e8f0;
+  --lp-shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --lp-shadow-md: 0 8px 30px rgba(15, 23, 42, 0.08);
+  --lp-shadow-lg: 0 20px 60px rgba(15, 23, 42, 0.12);
+  --lp-shadow-glow: 0 0 40px rgba(37, 99, 235, 0.25);
+  --lp-radius: 16px;
+  --lp-radius-lg: 24px;
+  --lp-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Keyframes ─────────────────────────────────────────────── */
+@keyframes lp-fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lp-fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes lp-scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes lp-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes lp-shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes lp-pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* ── Base ───────────────────────────────────────────────────── */
+.lp-page {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--lp-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Hero Section ──────────────────────────────────────────── */
+.lp-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #1e3a5f 70%, #0f172a 100%);
+  overflow: hidden;
+}
+
+/* Decorative orbs */
+.lp-hero::before,
+.lp-hero::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+}
+
+.lp-hero::before {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.25) 0%, transparent 70%);
+  top: -100px;
+  right: -100px;
+  animation: lp-float 8s ease-in-out infinite;
+}
+
+.lp-hero::after {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+  bottom: -80px;
+  left: -80px;
+  animation: lp-float 10s ease-in-out infinite reverse;
+}
+
+.lp-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 780px;
+  animation: lp-fadeInUp 0.9s ease-out;
+}
+
+.lp-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1.1rem;
+  background: var(--lp-surface-glass);
+  border: 1px solid var(--lp-surface-glass-border);
+  border-radius: 100px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.82rem;
+  font-weight: 600;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  margin-bottom: 2rem;
+  letter-spacing: 0.02em;
+}
+
+.lp-hero-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  position: relative;
+}
+
+.lp-hero-badge-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: lp-pulse-ring 2s ease-out infinite;
+}
+
+.lp-hero-title {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.15;
+  margin: 0 0 1.25rem 0;
+  letter-spacing: -0.03em;
+}
+
+.lp-hero-title-accent {
+  background: linear-gradient(135deg, #60a5fa 0%, #818cf8 50%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.lp-hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+  margin: 0 0 2.5rem 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: 400;
+}
+
+.lp-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.95rem 2.2rem;
+  background: linear-gradient(135deg, var(--lp-primary) 0%, var(--lp-accent) 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--lp-shadow-glow);
+  transition: var(--lp-transition);
+  letter-spacing: 0.01em;
+  font-family: inherit;
+}
+
+.lp-hero-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 60px rgba(37, 99, 235, 0.4);
+}
+
+.lp-hero-cta:active {
+  transform: translateY(0);
+}
+
+.lp-hero-scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.75rem;
+  font-weight: 500;
+  animation: lp-float 3s ease-in-out infinite;
+  z-index: 2;
+}
+
+.lp-hero-scroll-arrow {
+  font-size: 1.2rem;
+}
+
+/* ── Section Common ────────────────────────────────────────── */
+.lp-section {
+  padding: 5rem 2rem;
+}
+
+.lp-section--alt {
+  background: var(--lp-bg-section);
+}
+
+.lp-section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.lp-section-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+  animation: lp-fadeInUp 0.7s ease-out;
+}
+
+.lp-section-eyebrow {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--lp-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+}
+
+.lp-section-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 800;
+  color: var(--lp-text);
+  margin: 0 0 0.75rem 0;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.lp-section-desc {
+  font-size: 1.05rem;
+  color: var(--lp-text-secondary);
+  max-width: 620px;
+  margin: 0 auto;
+  line-height: 1.65;
+}
+
+/* ── Steps Grid ────────────────────────────────────────────── */
+.lp-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+}
+
+.lp-steps-grid--4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1024px) {
+  .lp-steps-grid--4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.lp-step-card {
+  position: relative;
+  background: var(--lp-surface);
+  border: 1px solid var(--lp-border);
+  border-radius: var(--lp-radius-lg);
+  padding: 2rem 1.75rem;
+  text-align: center;
+  transition: var(--lp-transition);
+  animation: lp-scaleIn 0.6s ease-out both;
+  box-shadow: var(--lp-shadow-sm);
+}
+
+.lp-step-card:nth-child(1) { animation-delay: 0.1s; }
+.lp-step-card:nth-child(2) { animation-delay: 0.25s; }
+.lp-step-card:nth-child(3) { animation-delay: 0.4s; }
+
+.lp-step-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--lp-shadow-lg);
+  border-color: var(--lp-primary-light);
+}
+
+.lp-step-number {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--lp-primary) 0%, var(--lp-accent) 100%);
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 800;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+}
+
+.lp-step-icon {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+  display: block;
+  line-height: 1;
+}
+
+.lp-step-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--lp-text);
+  margin: 0 0 0.6rem 0;
+}
+
+.lp-step-desc {
+  font-size: 0.9rem;
+  color: var(--lp-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Connector lines between step cards */
+.lp-step-connector {
+  display: none;
+}
+
+/* ── Requirements Grid ─────────────────────────────────────── */
+.lp-req-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.lp-req-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.15rem;
+  background: var(--lp-surface);
+  border: 1px solid var(--lp-border);
+  border-radius: var(--lp-radius);
+  padding: 1.5rem;
+  transition: var(--lp-transition);
+  animation: lp-fadeInUp 0.6s ease-out both;
+  box-shadow: var(--lp-shadow-sm);
+}
+
+.lp-req-card:nth-child(1) { animation-delay: 0.05s; }
+.lp-req-card:nth-child(2) { animation-delay: 0.15s; }
+.lp-req-card:nth-child(3) { animation-delay: 0.25s; }
+.lp-req-card:nth-child(4) { animation-delay: 0.35s; }
+
+.lp-req-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--lp-shadow-md);
+  border-color: var(--lp-primary-light);
+}
+
+.lp-req-icon {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+}
+
+.lp-req-icon--blue {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+}
+
+.lp-req-icon--red {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+.lp-req-icon--amber {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+}
+
+.lp-req-icon--green {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+}
+
+.lp-req-title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--lp-text);
+  margin: 0 0 0.35rem 0;
+}
+
+.lp-req-desc {
+  font-size: 0.85rem;
+  color: var(--lp-text-secondary);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ── Methods Comparison ────────────────────────────────────── */
+.lp-methods-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.75rem;
+}
+
+.lp-method-card {
+  position: relative;
+  background: var(--lp-surface);
+  border-radius: var(--lp-radius-lg);
+  padding: 2rem 1.75rem;
+  transition: var(--lp-transition);
+  animation: lp-scaleIn 0.6s ease-out both;
+  box-shadow: var(--lp-shadow-sm);
+  overflow: hidden;
+}
+
+.lp-method-card--recommended {
+  border: 2px solid var(--lp-primary);
+  box-shadow: var(--lp-shadow-md), 0 0 0 4px rgba(37, 99, 235, 0.08);
+}
+
+.lp-method-card--alt {
+  border: 1px solid var(--lp-border);
+}
+
+.lp-method-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--lp-shadow-lg);
+}
+
+.lp-method-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 1rem;
+}
+
+.lp-method-badge--rec {
+  background: linear-gradient(135deg, var(--lp-primary) 0%, var(--lp-accent) 100%);
+  color: #ffffff;
+}
+
+.lp-method-badge--alt {
+  background: #f1f5f9;
+  color: var(--lp-text-secondary);
+  border: 1px solid var(--lp-border);
+}
+
+.lp-method-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--lp-text);
+  margin: 0 0 0.6rem 0;
+}
+
+.lp-method-subtitle {
+  font-size: 0.88rem;
+  color: var(--lp-text-secondary);
+  margin: 0 0 1.25rem 0;
+  line-height: 1.55;
+}
+
+.lp-method-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.lp-method-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.85rem;
+  color: var(--lp-text-secondary);
+  line-height: 1.5;
+}
+
+.lp-method-step-num {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #eff6ff;
+  color: var(--lp-primary);
+  font-weight: 700;
+  font-size: 0.72rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  border: 1px solid #bfdbfe;
+}
+
+.lp-method-card--alt .lp-method-step-num {
+  background: #f1f5f9;
+  color: var(--lp-text-muted);
+  border-color: var(--lp-border);
+}
+
+/* ── Bottom CTA ────────────────────────────────────────────── */
+.lp-bottom-cta {
+  padding: 5rem 2rem;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e3a5f 100%);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.lp-bottom-cta::before {
+  content: '';
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.2) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.lp-bottom-cta-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.lp-bottom-cta-title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: -0.02em;
+}
+
+.lp-bottom-cta-desc {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 0 2rem 0;
+  line-height: 1.6;
+}
+
+.lp-bottom-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.95rem 2.4rem;
+  background: linear-gradient(135deg, var(--lp-primary) 0%, var(--lp-accent) 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--lp-shadow-glow);
+  transition: var(--lp-transition);
+  font-family: inherit;
+}
+
+.lp-bottom-cta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 60px rgba(37, 99, 235, 0.4);
+}
+
+.lp-bottom-cta-btn:active {
+  transform: translateY(0);
+}
+
+/* ── Footer ────────────────────────────────────────────────── */
+.lp-footer {
+  background: #0f172a;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.lp-footer-text {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.lp-footer-text a {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.lp-footer-text a:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ── Features Strip ────────────────────────────────────────── */
+.lp-features-strip {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  margin-top: 3rem;
+  animation: lp-fadeIn 1s ease-out 0.5s both;
+}
+
+.lp-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.lp-feature-item-icon {
+  font-size: 1.1rem;
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .lp-steps-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .lp-req-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lp-methods-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lp-section {
+    padding: 3.5rem 1.5rem;
+  }
+
+  .lp-hero {
+    padding: 3rem 1.5rem;
+  }
+
+  .lp-features-strip {
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .lp-hero-cta,
+  .lp-bottom-cta-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .lp-section {
+    padding: 2.5rem 1rem;
+  }
+
+  .lp-features-strip {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+}
+
+/* ── Excel Guide Section ───────────────────────────────────── */
+.lp-excel-guide-card {
+  background: var(--lp-surface);
+  border: 1px solid var(--lp-border);
+  border-radius: var(--lp-radius-lg);
+  padding: 2.25rem;
+  box-shadow: var(--lp-shadow-md);
+  margin-top: 1rem;
+}
+
+.lp-excel-guide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--lp-border);
+}
+
+.lp-excel-guide-title-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.lp-excel-guide-icon {
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+.lp-excel-guide-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--lp-text);
+  margin: 0 0 0.4rem 0;
+}
+
+.lp-excel-guide-subtitle {
+  font-size: 0.9rem;
+  color: var(--lp-text-secondary);
+  margin: 0;
+  max-width: 580px;
+  line-height: 1.5;
+}
+
+.lp-excel-dl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.4rem;
+  background: #15803d;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(21, 128, 61, 0.25);
+  transition: var(--lp-transition);
+  font-family: inherit;
+}
+
+.lp-excel-dl-btn:hover {
+  background: #166534;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(21, 128, 61, 0.35);
+}
+
+.lp-excel-table-container {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--lp-border);
+  background: #ffffff;
+}
+
+.lp-excel-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.lp-excel-table th {
+  background: #f8fafc;
+  color: #1e3a8a;
+  font-weight: 700;
+  padding: 0.9rem 1.1rem;
+  border-bottom: 2px solid var(--lp-border);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.lp-excel-table td {
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid #f1f5f9;
+  color: var(--lp-text);
+  line-height: 1.55;
+  vertical-align: top;
+}
+
+.lp-excel-table tr:last-child td {
+  border-bottom: none;
+}
+
+.lp-excel-table tr:hover td {
+  background: #fafafa;
+}
+
+.lp-col-alias {
+  font-size: 0.75rem;
+  color: var(--lp-text-muted);
+  font-weight: normal;
+  display: block;
+}
+
+.lp-excel-table code {
+  background: #f1f5f9;
+  color: #0f172a;
+  padding: 0.2rem 0.45rem;
+  border-radius: 5px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.82rem;
+  border: 1px solid #e2e8f0;
+}
+
+.lp-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.lp-badge--req {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.lp-badge--opt {
+  background: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.lp-excel-tips-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+}
+
+.lp-excel-tip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 1rem 1.15rem;
+  font-size: 0.85rem;
+  color: var(--lp-text-secondary);
+}
+
+.lp-excel-tip-item strong {
+  display: block;
+  color: var(--lp-text);
+  margin-bottom: 0.25rem;
+}
+
+.lp-excel-tip-item p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.lp-excel-tip-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* ── Free Tiles Grid ────────────────────────────────────────── */
+.lp-tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.lp-tile-card {
+  background: var(--lp-surface);
+  border: 1px solid var(--lp-border);
+  border-radius: var(--lp-radius);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--lp-shadow-sm);
+  transition: var(--lp-transition);
+}
+
+.lp-tile-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--lp-shadow-md);
+  border-color: var(--lp-primary-light);
+}
+
+.lp-tile-icon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  line-height: 1;
+}
+
+.lp-tile-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--lp-text);
+  margin: 0 0 0.5rem 0;
+}
+
+.lp-tile-desc {
+  font-size: 0.86rem;
+  color: var(--lp-text-secondary);
+  line-height: 1.55;
+  margin: 0 0 1rem 0;
+  flex: 1;
+}
+
+.lp-tile-tag {
+  align-self: flex-start;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+}
+
+@media (max-width: 900px) {
+  .lp-excel-tips-grid {
+    grid-template-columns: 1fr;
+  }
+  .lp-tiles-grid {
+    grid-template-columns: 1fr;
+  }
+}

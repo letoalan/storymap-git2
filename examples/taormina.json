@@ -1,0 +1,169 @@
+{
+  "storymap": {
+    "calculate_zoom": true,
+    "map_type": "stamen:toner-lite",
+    "slides": [
+      {
+        "type": "overview",
+        "location": {
+          "lat": 37.8516,
+          "lon": 15.2853,
+          "zoom": 13
+        },
+        "text": {
+          "headline": "Jour 1 — Arrivée & Panorama sur Taormine",
+          "text": "<p>Accueil VIP à l'aéroport de Catane et transfert en berline de luxe. Présentation du circuit de 10 jours en Sicile orientale. <strong>Sécurité :</strong> Briefing de prévention et remise du guide des numéros d'urgence locaux (Urgence : 112). Source de veille territoriale : <em>RssFeeder-GIT / Actualités Sicile</em>.</p>"
+        },
+        "media": {
+          "url": "https://images.unsplash.com/photo-1548625361-18da90e79603",
+          "caption": "Vue panoramique sur Taormine et le littoral",
+          "credit": "Unsplash"
+        }
+      },
+      {
+        "location": {
+          "lat": 37.8524,
+          "lon": 15.2882,
+          "zoom": 16
+        },
+        "text": {
+          "headline": "Jour 2 — Théâtre Antique de Taormine",
+          "text": "<p>Visite guidée privative du chef-d'œuvre gréco-romain avec accès coupe-file VIP. <strong>Sécurité & Accès :</strong> Zone piétonne aménagée et sécurisée, équipement de marche conseillé sur les gradins historiques. Veille RssFeeder-GIT : Horaires d'été confirmés.</p>"
+        },
+        "media": {
+          "url": "https://images.unsplash.com/photo-1548625361-18da90e79603",
+          "caption": "Gradins du Théâtre Antique avec vue sur l'Etna",
+          "credit": "Unsplash"
+        }
+      },
+      {
+        "location": {
+          "lat": 37.8510,
+          "lon": 15.2860,
+          "zoom": 16
+        },
+        "text": {
+          "headline": "Jour 3 — Corso Umberto & Palazzo Ducale",
+          "text": "<p>Shopping de luxe et dégustation de pâtisseries artisanales dans les cafés historiques de la Piazza IX Aprile. Prestation VIP : Rencontre exclusive avec un artisan céramiste. <strong>Sécurité :</strong> Zone piétonne sans circulation automobile.</p>"
+        },
+        "media": {
+          "url": "https://images.unsplash.com/photo-1548625361-18da90e79603",
+          "caption": "Corso Umberto et la Piazza IX Aprile",
+          "credit": "Unsplash"
+        }
+      },
+      {
+        "location": {
+          "lat": 37.8505,
+          "lon": 15.3005,
+          "zoom": 15
+        },
+        "text": {
+          "headline": "Jour 4 — Réserve Naturelle d'Isola Bella",
+          "text": "<p>Excursion privative en bateau jusqu'à la baie d'Isola Bella. Baignade et plongée guidée. <strong>Sécurité & Matériel :</strong> Gilets de sauvetage obligatoires à bord et chaussons de baignade recommandés sur la plage de galets.</p>"
+        },
+        "media": {
+          "url": "https://images.unsplash.com/photo-1548625361-18da90e79603",
+          "caption": "La presqu'île préservée d'Isola Bella",
+          "credit": "Unsplash"
+        }
+      },
+      {
+        "location": {
+          "lat": 37.8625,
+          "lon": 15.2811,
+          "zoom": 15
+        },
+        "text": {
+          "headline": "Jour 5 — Village Médiéval de Castelmola",
+          "text": "<p>Montee au village perché de Castelmola offrant un panorama à 360°. Dégustation privative du célèbre vin d'amande au Bar Turrisi. <strong>Sécurité :</strong> Ruelle en pente forte, chaussures de marche obligatoires.</p>"
+        },
+        "media": {
+          "url": "https://images.unsplash.com/photo-1548625361-18da90e79603",
+          "caption": "Le village perché de Castelmola",
+          "credit": "Unsplash"
+        }
+      },
+      {
+        "location": {
+          "lat": 37.8872,
+          "lon": 15.2441,
+          "zoom": 14
+        },
+        "text": {
+          "headline": "Jour 6 — Gorges de l'Alcantara",
+          "text": "<p>Découverte des formations basaltiques spectaculaires du fleuve Alcantara. Prestation VIP : Parcours guidé en combinaison étanche. <strong>Sécurité :</strong> Port du casque et de la combinaison étanche obligatoire sous la supervision de guides diplômés.</p>"
+        },
+        "media": {
+          "url": "https://images.unsplash.com/photo-1548625361-18da90e79603",
+          "caption": "Canyon basaltique des Gorges de l'Alcantara",
+          "credit": "Unsplash"
+        }
+      },
+      {
+        "location": {
+          "lat": 37.7510,
+          "lon": 14.9934,
+          "zoom": 12
+        },
+        "text": {
+          "headline": "Jour 7 — Ascension Privative de l'Etna",
+          "text": "<p>Excursion en véhicule 4x4 de luxe jusqu'aux cratères Silvestri avec un volcanologue certifié. <strong>Sécurité Volcanique :</strong> Consultation préalable du bulletin de suivi volcanologique RssFeeder-GIT / INGV. Vêtements chauds et chaussures de randonnée impératifs.</p>"
+        },
+        "media": {
+          "url": "https://images.unsplash.com/photo-1548625361-18da90e79603",
+          "caption": "Paysage volcanique et cratères de l'Etna",
+          "credit": "Unsplash"
+        }
+      },
+      {
+        "location": {
+          "lat": 37.8080,
+          "lon": 15.2280,
+          "zoom": 14
+        },
+        "text": {
+          "headline": "Jour 8 — Vignobles des Pentes de l'Etna",
+          "text": "<p>Visite et déjeuner gastronomique dans un domaine viticole d'exception (AOC Etna DOC). Prestation Luxe : Dégustation commentée par le sommelier du domaine.</p>"
+        },
+        "media": {
+          "url": "https://images.unsplash.com/photo-1548625361-18da90e79603",
+          "caption": "Vignobles en terrasses sur les pentes volcaniques",
+          "credit": "Unsplash"
+        }
+      },
+      {
+        "location": {
+          "lat": 37.8420,
+          "lon": 15.2530,
+          "zoom": 14
+        },
+        "text": {
+          "headline": "Jour 9 — Giardini Naxos & Littoral",
+          "text": "<p>Journée détente et découverte archéologique de la première colonie grecque de Sicile. Soirée de gala et dîner 5 étoiles au Belmond Grand Hotel Timeo.</p>"
+        },
+        "media": {
+          "url": "https://images.unsplash.com/photo-1548625361-18da90e79603",
+          "caption": "Baie de Giardini Naxos",
+          "credit": "Unsplash"
+        }
+      },
+      {
+        "location": {
+          "lat": 37.5024,
+          "lon": 15.0873,
+          "zoom": 13
+        },
+        "text": {
+          "headline": "Jour 10 — Catane Baroque & Synthèse du Circuit",
+          "text": "<p>Visite du marché historique de la Pescheria et de la Piazza del Duomo à Catane. Transfert retour VIP vers l'aéroport. <strong>Synthèse :</strong> Fin du circuit de 10 jours. Merci de consulter la fiche bento récapitulative ci-dessous.</p>"
+        },
+        "media": {
+          "url": "https://images.unsplash.com/photo-1548625361-18da90e79603",
+          "caption": "Piazza del Duomo et la Fontaine de l'Éléphant à Catane",
+          "credit": "Unsplash"
+        }
+      }
+    ]
+  }
+}
