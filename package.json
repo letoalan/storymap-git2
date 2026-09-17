@@ -10,7 +10,8 @@
     "generate:fragment": "npx tsx src/utils/generateFragmentDemo.ts",
     "generate:wp": "npx tsx src/utils/generateWordPressTestPage.ts",
     "audit": "npx tsx src/utils/auditNetworkAndIsolation.ts",
-    "validate": "npx tsx src/utils/testPedagogicalValidator.ts"
+    "validate": "npx tsx src/utils/testPedagogicalValidator.ts",
+    "test:import": "npx tsx src/utils/testJsonImportExport.ts"
   },
   "dependencies": {
     "maplibre-gl": "^4.7.1",

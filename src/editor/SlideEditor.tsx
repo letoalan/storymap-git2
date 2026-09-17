@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { StoryData, StorySlide, MobilityMode } from '../types/story';
 import { MediaUploader } from './MediaUploader';
-import { exportToJsonFile } from './storyDataExport';
+import { exportToJsonFile, importFromJsonFile } from './storyDataExport';
 import { StoryMapView } from '../components/StoryMapView';
 import { RichTextEditor } from './RichTextEditor';
 import { LocationSearchInput } from './LocationSearchInput';
@@ -453,6 +453,74 @@ export const SlideEditor: React.FC<SlideEditorProps> = ({
             <span>📥</span>
             <span>Modèle Excel (.xlsx)</span>
           </button>
+
+          {/* Bouton Importer JSON — Symétrique à Sauvegarder JSON */}
+          <label
+            htmlFor="editor-json-upload"
+            title="Importer un fichier JSON sauvegardé (storymap-published.json ou Knight Lab) avec tous ses paramètres identiques"
+            style={{
+              background: '#ffffff',
+              color: '#1e3a8a',
+              border: '1.5px solid #3b82f6',
+              borderRadius: '8px',
+              padding: '0.55rem 1rem',
+              fontSize: '0.85rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.35rem',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            <span>📂</span>
+            <span>Importer JSON</span>
+          </label>
+          <input
+            id="editor-json-upload"
+            type="file"
+            accept=".json,application/json"
+            style={{ display: 'none' }}
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              try {
+                const importedData = await importFromJsonFile(file);
+
+                // Si des tronçons d'itinéraire manquent entre étapes géoréférencées consécutives,
+                // les calculer pour offrir un tracé complet immédiat
+                const updatedSlides = [...importedData.slides];
+                let computedCount = 0;
+                for (let i = 0; i < updatedSlides.length - 1; i++) {
+                  const curr = updatedSlides[i];
+                  const nxt = updatedSlides[i + 1];
+                  if (!curr.routeToNext && curr.location && nxt.location && curr.location.lat !== 0 && nxt.location.lat !== 0) {
+                    try {
+                      const mode = curr.mobilityToNext || 'walking';
+                      const route = await calculateRouteBetweenSlides(curr.location, nxt.location, mode);
+                      updatedSlides[i] = {
+                        ...curr,
+                        mobilityToNext: mode,
+                        routeToNext: route,
+                      };
+                      computedCount++;
+                    } catch (routeErr) {
+                      console.warn(`[Import JSON] Itinéraire étape ${i + 1} -> ${i + 2} ignoré:`, routeErr);
+                    }
+                  }
+                }
+
+                const finalData: StoryData = { ...importedData, slides: updatedSlides };
+                onChange(finalData);
+                setActiveSlideIndex(0);
+                alert(`✅ Projet JSON "${file.name}" importé avec succès !\n\n• Étapes : ${finalData.slides.length}\n• Style de fond de carte : ${finalData.mapStyle || 'editorial'}${computedCount > 0 ? `\n• Itinéraires calculés automatiquement : ${computedCount}` : '\n• Tracés d\'itinéraires sauvegardés restaurés à l\'identique'}`);
+              } catch (err: any) {
+                alert(`❌ Erreur lors de l'importation JSON : ${err?.message || err}`);
+              } finally {
+                e.target.value = '';
+              }
+            }}
+          />
 
           {/* Bouton secondaire outline — Export JSON */}
           <button

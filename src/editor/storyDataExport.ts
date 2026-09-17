@@ -1,4 +1,5 @@
 import { StoryData, KnightLabRawData } from '../types/story';
+import { parseKnightLabJson } from '../utils/jsonToStoryData';
 
 /**
  * Formate un objet StoryData interne au format Knight Lab standard `published.json`.
@@ -54,6 +55,55 @@ export function exportToJsonFile(storyData: StoryData, filename: string = 'story
 }
 
 /**
+ * Valide et convertit tout contenu JSON (texte ou objet) vers la structure StoryData,
+ * restaurant l'ensemble des paramètres sauvegardés à l'identique :
+ * style de carte, étapes, coordonnées GPS, textes, médias complets, mobilités et tracés d'itinéraires.
+ */
+export function parseJsonToStoryData(jsonInput: string | unknown): StoryData {
+  return parseKnightLabJson(jsonInput);
+}
+
+/**
+ * Ouvre la boîte de dialogue système pour sélectionner un fichier JSON (.json).
+ */
+export function promptUserForJsonFile(): Promise<File> {
+  return new Promise((resolve, reject) => {
+    if (typeof document === 'undefined') {
+      return reject(new Error('Environnement navigateur requis pour sélectionner un fichier'));
+    }
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json,application/json';
+    input.style.display = 'none';
+
+    input.onchange = () => {
+      const selected = input.files?.[0];
+      if (selected) {
+        resolve(selected);
+      } else {
+        reject(new Error('Aucun fichier sélectionné'));
+      }
+      if (document.body.contains(input)) {
+        document.body.removeChild(input);
+      }
+    };
+
+    document.body.appendChild(input);
+    input.click();
+  });
+}
+
+/**
+ * Lit et convertit un fichier JSON (fourni en paramètre ou sélectionné interactivement)
+ * vers l'objet StoryData avec l'intégralité des paramètres restaurés à l'identique de la sauvegarde.
+ */
+export async function importFromJsonFile(file?: File): Promise<StoryData> {
+  const targetFile = file || (await promptUserForJsonFile());
+  const text = await targetFile.text();
+  return parseJsonToStoryData(text);
+}
+
+/**
  * Crée une StoryMap vierge avec une slide de titre par défaut.
  */
 export function createDefaultStoryData(): StoryData {
@@ -88,3 +138,4 @@ export function createDefaultStoryData(): StoryData {
     ],
   };
 }
+

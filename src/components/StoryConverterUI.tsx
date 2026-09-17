@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { parseKnightLabJson } from '../utils/jsonToStoryData';
 import { StoryMapContainer } from './StoryMapContainer';
 import { SlideEditor } from '../editor/SlideEditor';
 import { useLocalDraft } from '../editor/useLocalDraft';
-import { formatToKnightLabJson } from '../editor/storyDataExport';
+import { formatToKnightLabJson, importFromJsonFile } from '../editor/storyDataExport';
 import { parseSpreadsheetFile, downloadSampleExcel } from '../utils/csvImporter';
 import { StoryData } from '../types/story';
 import { ExportCodePad } from './ExportCodePad';
@@ -33,10 +32,7 @@ export const StoryConverterUI: React.FC = () => {
 
     try {
       if (isJson) {
-        const text = await file.text();
-        const raw = JSON.parse(text);
-        const parsed = parseKnightLabJson(raw);
-        importJsonData(raw);
+        const parsed = await importFromJsonFile(file);
         saveDraft(parsed);
       } else {
         // Tableurs : Excel (.xlsx, .xls) ou CSV (.csv, .tsv)
