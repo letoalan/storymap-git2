@@ -473,27 +473,28 @@ export const SlideEditor: React.FC<SlideEditorProps> = ({
             💾 Sauvegarder JSON
           </button>
 
-          {/* CTA principal — Passage au Studio */}
-          {onSendToStudio && (
-            <button
-              type="button"
-              onClick={() => onSendToStudio(storyData)}
-              style={{
-                background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%)',
-                color: '#ffffff',
-                border: 'none',
-                borderRadius: '8px',
-                padding: '0.6rem 1.3rem',
-                fontSize: '0.9rem',
-                fontWeight: 800,
-                cursor: 'pointer',
-                boxShadow: '0 4px 14px rgba(37, 99, 235, 0.3)',
-                transition: 'all 0.2s ease',
-              }}
-            >
-              🚀 Exporter pour WordPress
-            </button>
-          )}
+              {/* CTA principal — Passage au Studio d'Exportation */}
+              {onSendToStudio && (
+                <button
+                  type="button"
+                  onClick={() => onSendToStudio(storyData)}
+                  title="Ouvrir le studio d'exportation pour générer la page HTML autonome prête pour GitHub Pages"
+                  style={{
+                    background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%)',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: '8px',
+                    padding: '0.6rem 1.3rem',
+                    fontSize: '0.9rem',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 14px rgba(37, 99, 235, 0.3)',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  📤 Exporter (HTML / GitHub Pages)
+                </button>
+              )}
         </div>
       </div>
 

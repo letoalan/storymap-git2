@@ -6,31 +6,22 @@ import { useLocalDraft } from '../editor/useLocalDraft';
 import { formatToKnightLabJson } from '../editor/storyDataExport';
 import { parseSpreadsheetFile, downloadSampleExcel } from '../utils/csvImporter';
 import { StoryData } from '../types/story';
+import { ExportCodePad } from './ExportCodePad';
 
 export const StoryConverterUI: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'editor' | 'studio'>('editor');
   const { storyData, saveDraft, resetDraft, lastSaved, importJsonData } = useLocalDraft();
 
-  const [jsonText, setJsonText] = useState<string>(() => JSON.stringify(formatToKnightLabJson(storyData), null, 2));
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [showImportBox, setShowImportBox] = useState<boolean>(false);
 
   // Transfert de l'éditeur vers le studio
   const handleSendToStudio = (currentStoryData: StoryData) => {
-    const formatted = formatToKnightLabJson(currentStoryData);
-    setJsonText(JSON.stringify(formatted, null, 2));
-    setSelectedFileName('Brouillon Éditeur (sauvegardé)');
+    saveDraft(currentStoryData);
+    setSelectedFileName('Brouillon Éditeur (synchronisé)');
     setActiveTab('studio');
   };
-
-  let parsedData = null;
-
-  try {
-    const raw = JSON.parse(jsonText);
-    parsedData = parseKnightLabJson(raw);
-  } catch (e: any) {
-    // Keep errorMsg for display
-  }
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -43,15 +34,16 @@ export const StoryConverterUI: React.FC = () => {
     try {
       if (isJson) {
         const text = await file.text();
-        setJsonText(text);
         const raw = JSON.parse(text);
+        const parsed = parseKnightLabJson(raw);
         importJsonData(raw);
+        saveDraft(parsed);
       } else {
         // Tableurs : Excel (.xlsx, .xls) ou CSV (.csv, .tsv)
         const parsed = await parseSpreadsheetFile(file);
         const formatted = formatToKnightLabJson(parsed);
         importJsonData(formatted);
-        setJsonText(JSON.stringify(formatted, null, 2));
+        saveDraft(parsed);
       }
     } catch (err: any) {
       setErrorMsg(`Erreur lors du traitement du fichier : ${err?.message || err}`);
@@ -59,6 +51,10 @@ export const StoryConverterUI: React.FC = () => {
       e.target.value = '';
     }
   };
+
+  const slideCount = storyData.slides.length;
+  const circuitTitle = storyData.slides[0]?.text?.headline || 'Mon Parcours Touristique';
+  const isBtsCompliant = slideCount >= 10;
 
   return (
     <div style={styles.container}>
@@ -80,14 +76,11 @@ export const StoryConverterUI: React.FC = () => {
               ...(activeTab === 'editor' ? styles.activeTab : {}),
             }}
           >
-            ✍️ Créer mon parcours
+            ✍️ Éditer mon parcours ({slideCount} étapes)
           </button>
           <button
             type="button"
             onClick={() => {
-              // Synchroniser les données courantes lors de la bascule
-              const formatted = formatToKnightLabJson(storyData);
-              setJsonText(JSON.stringify(formatted, null, 2));
               setActiveTab('studio');
             }}
             style={{
@@ -95,7 +88,7 @@ export const StoryConverterUI: React.FC = () => {
               ...(activeTab === 'studio' ? styles.activeTab : {}),
             }}
           >
-            📤 Exporter & Valider
+            📤 Exporter & Publier (GitHub Pages)
           </button>
         </div>
       </nav>
@@ -111,85 +104,158 @@ export const StoryConverterUI: React.FC = () => {
         />
       )}
 
-      {/* VUE 2 : Studio */}
+      {/* VUE 2 : Studio d'Exportation */}
       {activeTab === 'studio' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <header style={styles.header}>
-            <h1 style={styles.title}>📤 StoryMap-GIT — Studio d'Exportation & Publication</h1>
-            <p style={styles.subtitle}>BTS Tourisme GIT (Lycée Paul Éluard, Saint-Junien) • Architecture Serverless RGPD</p>
+            <h1 style={styles.title}>📤 Studio d'Exportation & Publication Autonome</h1>
+            <p style={styles.subtitle}>
+              BTS Tourisme GIT (Lycée Paul Éluard, Saint-Junien) • Publication web 100% autonome sur GitHub Pages
+            </p>
           </header>
 
-          <div style={styles.controlBox}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-              <label style={styles.label}>
-                📂 Importer un fichier de parcours (JSON StoryMap ou tableau CSV / Excel) :
-              </label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <label
-                  htmlFor="story-file-upload"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    padding: '0.65rem 1.25rem',
-                    background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%)',
-                    color: '#ffffff',
-                    borderRadius: '10px',
-                    fontWeight: 700,
-                    fontSize: '0.88rem',
-                    cursor: 'pointer',
-                    boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)',
-                    transition: 'all 0.2s ease',
-                  }}
-                >
-                  📁 Choisir un fichier (Excel, CSV ou JSON)...
-                </label>
-                <input
-                  id="story-file-upload"
-                  type="file"
-                  accept=".xlsx,.xls,.ods,.json,.csv,.tsv,.txt"
-                  onChange={handleFileUpload}
-                  style={{ display: 'none' }}
-                />
-
-                <button
-                  type="button"
-                  onClick={() => downloadSampleExcel()}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.4rem',
-                    padding: '0.65rem 1rem',
-                    background: '#ffffff',
-                    color: '#15803d',
-                    borderRadius: '10px',
-                    border: '1px solid #bbf7d0',
-                    fontWeight: 600,
-                    fontSize: '0.85rem',
-                    cursor: 'pointer',
-                  }}
-                >
-                  📥 Modèle Excel (.xlsx)
-                </button>
-
-                {selectedFileName && (
-                  <span style={{ fontSize: '0.82rem', background: '#dbeafe', color: '#1e40af', padding: '0.3rem 0.75rem', borderRadius: '20px', fontWeight: 600, border: '1px solid #bfdbfe' }}>
-                    📄 Fichier chargé : {selectedFileName}
-                  </span>
-                )}
+          {/* Bandeau de synthèse du parcours actif */}
+          <div style={styles.summaryBar}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: '1.25rem' }}>📍</span>
+              <div>
+                <strong style={{ fontSize: '0.95rem', color: '#0f172a', display: 'block' }}>
+                  {circuitTitle}
+                </strong>
+                <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
+                  {selectedFileName ? `Source : ${selectedFileName}` : 'Brouillon actif dans votre navigateur'}
+                </span>
               </div>
             </div>
 
-            {errorMsg && <p style={styles.errorText}>❌ {errorMsg}</p>}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+              <span
+                style={{
+                  padding: '0.35rem 0.75rem',
+                  borderRadius: '20px',
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  background: isBtsCompliant ? '#dcfce7' : '#fef3c7',
+                  color: isBtsCompliant ? '#166534' : '#92400e',
+                  border: `1px solid ${isBtsCompliant ? '#86efac' : '#fde68a'}`,
+                }}
+              >
+                {isBtsCompliant ? `✓ Conforme BTS (${slideCount} étapes)` : `⚠️ ${slideCount}/10 étapes BTS recommandées`}
+              </span>
+
+              <button
+                type="button"
+                onClick={() => setShowImportBox(!showImportBox)}
+                style={{
+                  background: '#ffffff',
+                  border: '1px solid #cbd5e1',
+                  borderRadius: '8px',
+                  padding: '0.35rem 0.75rem',
+                  fontSize: '0.78rem',
+                  fontWeight: 600,
+                  color: '#334155',
+                  cursor: 'pointer',
+                }}
+              >
+                📁 {showImportBox ? 'Masquer import' : 'Importer autre fichier'}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab('editor')}
+                style={{
+                  background: '#eff6ff',
+                  border: '1px solid #bfdbfe',
+                  borderRadius: '8px',
+                  padding: '0.35rem 0.75rem',
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  color: '#1d4ed8',
+                  cursor: 'pointer',
+                }}
+              >
+                ✏️ Modifier dans l'éditeur
+              </button>
+            </div>
           </div>
 
+          {/* Tiroir optionnel d'import de fichier */}
+          {showImportBox && (
+            <div style={styles.controlBox}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                <label style={styles.label}>
+                  📂 Importer un autre fichier de circuit (JSON StoryMap ou tableau Excel / CSV) :
+                </label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                  <label
+                    htmlFor="story-file-upload"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      padding: '0.6rem 1.1rem',
+                      background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%)',
+                      color: '#ffffff',
+                      borderRadius: '8px',
+                      fontWeight: 700,
+                      fontSize: '0.85rem',
+                      cursor: 'pointer',
+                      boxShadow: '0 4px 12px rgba(37, 99, 235, 0.2)',
+                    }}
+                  >
+                    📁 Choisir un fichier...
+                  </label>
+                  <input
+                    id="story-file-upload"
+                    type="file"
+                    accept=".xlsx,.xls,.ods,.json,.csv,.tsv,.txt"
+                    onChange={handleFileUpload}
+                    style={{ display: 'none' }}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => downloadSampleExcel()}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      padding: '0.6rem 0.9rem',
+                      background: '#ffffff',
+                      color: '#15803d',
+                      borderRadius: '8px',
+                      border: '1px solid #bbf7d0',
+                      fontWeight: 600,
+                      fontSize: '0.82rem',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    📥 Télécharger modèle Excel type
+                  </button>
+                </div>
+              </div>
+
+              {errorMsg && <p style={styles.errorText}>❌ {errorMsg}</p>}
+            </div>
+          )}
+
+          {/* PAD DE CODE INTERACTIF (COPIER / COUPER / TÉLÉCHARGER / APERÇU) */}
+          <ExportCodePad
+            storyData={storyData}
+            onBackToEditor={() => setActiveTab('editor')}
+          />
+
+          {/* APERÇU INTERACTIF DE LA STORYMAP */}
           <div style={styles.previewSection}>
-            <h3 style={styles.previewTitle}>🗺️ Aperçu du Parcours & Mobilités</h3>
-            {parsedData ? (
-              <StoryMapContainer data={parsedData} />
-            ) : (
-              <p style={{ color: '#f87171' }}>JSON invalide ou en cours de saisie...</p>
-            )}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.6rem' }}>
+              <h3 style={{ margin: 0, color: '#0f172a', fontSize: '1.15rem', fontWeight: 700 }}>
+                🗺️ Aperçu interactif du circuit (Vue Élève & Client)
+              </h3>
+              <span style={{ fontSize: '0.8rem', color: '#64748b' }}>
+                Interactif • Défilement des slides et déplacement cartographique coordonné
+              </span>
+            </div>
+            <StoryMapContainer data={storyData} />
           </div>
         </div>
       )}
@@ -201,9 +267,9 @@ const styles: Record<string, React.CSSProperties> = {
   container: {
     width: '100%',
     boxSizing: 'border-box',
-    maxWidth: '1380px',
+    maxWidth: '1440px',
     margin: '0 auto',
-    padding: '1.5rem',
+    padding: '1.25rem',
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   },
   navTabs: {
@@ -235,7 +301,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   header: {
     textAlign: 'center',
-    marginBottom: '1rem',
+    marginBottom: '0.5rem',
   },
   title: {
     margin: '0 0 0.4rem 0',
@@ -248,16 +314,24 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#64748b',
     fontSize: '0.95rem',
   },
+  summaryBar: {
+    background: '#ffffff',
+    padding: '1rem 1.25rem',
+    borderRadius: '14px',
+    border: '1px solid #e2e8f0',
+    boxShadow: '0 2px 8px rgba(15, 23, 42, 0.04)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    gap: '0.85rem',
+  },
   controlBox: {
     background: '#ffffff',
-    padding: '1.5rem',
-    borderRadius: '16px',
+    padding: '1.25rem',
+    borderRadius: '14px',
     boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
-    marginBottom: '1.5rem',
     border: '1px solid #e2e8f0',
-  },
-  inputGroup: {
-    marginBottom: '1.25rem',
   },
   label: {
     display: 'block',
@@ -266,47 +340,6 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#1e3a8a',
     fontSize: '0.9rem',
   },
-  fileInput: {
-    padding: '0.4rem',
-    color: '#334155',
-  },
-  textarea: {
-    width: '100%',
-    fontFamily: 'monospace',
-    fontSize: '0.85rem',
-    padding: '0.75rem',
-    borderRadius: '10px',
-    border: '1px solid #cbd5e1',
-    background: '#f8fafc',
-    color: '#0f172a',
-    boxSizing: 'border-box',
-  },
-  reportBox: {
-    padding: '1rem',
-    background: '#eff6ff',
-    borderRadius: '12px',
-    border: '1px solid #bfdbfe',
-    marginBottom: '1.25rem',
-    fontSize: '0.9rem',
-  },
-  warningText: {
-    margin: '0.35rem 0 0 0',
-    color: '#b45309',
-    fontSize: '0.85rem',
-  },
-  copyBtn: {
-    width: '100%',
-    padding: '0.85rem',
-    background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%)',
-    color: '#ffffff',
-    border: 'none',
-    borderRadius: '10px',
-    fontWeight: 800,
-    fontSize: '1rem',
-    cursor: 'pointer',
-    boxShadow: '0 4px 14px rgba(37, 99, 235, 0.3)',
-    transition: 'all 0.2s ease',
-  },
   errorText: {
     color: '#dc2626',
     marginTop: '0.75rem',
@@ -314,17 +347,9 @@ const styles: Record<string, React.CSSProperties> = {
   },
   previewSection: {
     background: '#ffffff',
-    padding: '1.5rem',
+    padding: '1.25rem',
     borderRadius: '16px',
     boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
     border: '1px solid #e2e8f0',
-  },
-  previewTitle: {
-    margin: '0 0 1.25rem 0',
-    color: '#0f172a',
-    borderBottom: '1px solid #e2e8f0',
-    paddingBottom: '0.6rem',
-    fontSize: '1.2rem',
-    fontWeight: 700,
   },
 };
